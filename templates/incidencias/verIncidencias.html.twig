@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista de Clientes
+{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+		<div class="container">
+			<a class="navbar-brand" href="#">Servicio Tecnico</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLosClientes') }}">Clientes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLasIncidencias') }}">Incidencias</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					{% if app.user %}
+						<li class="nav-item mx-5">
+							<span class="navbar-text">{{ app.user.nombre }}</span>
+						</li>
+						<li class="nav-item">
+							<a class=" btn btn-danger" href="{{ path('app_logout') }}">Cerrar sesión</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container text-center">
+		<div class="example-wrapper">
+			<h1 class="mb-4">Lista de Incidencias</h1>
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% if incidencias is not empty %}
+				<ul class="list-group mb-4">
+					{% for incidencia in incidencias %}
+						<li class="list-group-item d-flex justify-content-between align-items-center"></li>
+						<li class="list-group-item">
+							<a href="{{ path('verIncidencia', { 'id': incidencia.id }) }}">
+								{{ incidencia.titulo }}
+							</a>
+							<span class="badge badge-secondary">{{ incidencia.estado }}</span>
+							<small class="text-muted">Fecha de Creación:
+								{{ incidencia.fechaCreacion|date('Y-m-d') }}</small>
+						</li>
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>No hay incidencias.</p>
+		{% endif %}
+		<a href="{{ path('addIncidencia2') }}" class="btn btn-success">Añadir incidencia</a>
+	</div>
+</div>{% endblock %}

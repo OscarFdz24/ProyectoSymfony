@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalles del Cliente -
+	{{ cliente.nombre }}
+{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+		<div class="container">
+			<a class="navbar-brand" href="#">Servicio Tecnico</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLosClientes') }}">Clientes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLasIncidencias') }}">Incidencias</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					{% if app.user %}
+						<li class="nav-item mx-5">
+							<span class="navbar-text">{{ app.user.nombre }}</span>
+						</li>
+						<li class="nav-item">
+							<a class=" btn btn-danger" href="{{ path('app_logout') }}">Cerrar sesión</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+				{% endfor %}
+				<h1 class="mb-4">Detalles del Cliente -
+					{{ cliente.nombre }}</h1>
+				<dl class="row">
+					<dt class="col-sm-4">Nombre:</dt>
+					<dd class="col-sm-8">{{ cliente.nombre }}</dd>
+					<dt class="col-sm-4">Apellidos:</dt>
+					<dd class="col-sm-8">{{ cliente.apellidos }}</dd>
+					<dt class="col-sm-4">Teléfono:</dt>
+					<dd class="col-sm-8">{{ cliente.telefono }}</dd>
+					<dt class="col-sm-4">Direccion:</dt>
+					<dd class="col-sm-8">{{ cliente.direccion }}</dd>
+				</dl>
+				<a href="{{ path('editarCliente', { 'id': cliente.id }) }}" class="btn btn-primary">Editar</a>
+				<a href="{{ path('deleteCliente', { 'id': cliente.id }) }}" class="btn btn-danger">Eliminar</a>
+				<a href="{{ path('verTodosLosClientes') }}" class="btn btn-secondary">Volver</a>
+				<h2 class="mb-3 mt-5">Incidencias</h2>
+				<ul class="list-group">
+					{% for incidencia in incidencias %}
+						<li class="list-group-item">
+							<strong>{{ incidencia.titulo }}</strong>
+							<span class="badge badge-secondary">{{ incidencia.estado }}</span>
+							<small class="text-muted">Fecha de Creación:
+								{{ incidencia.fechaCreacion|date('Y-m-d') }}</small>
+							<a href="{{ path('deleteIncidencia', {clienteId: cliente.id, id: incidencia.id}) }}" class="btn btn-danger mr-2">Borrar</a>
+							<a href="{{ path('editarIncidencia', {clienteId: cliente.id, id: incidencia.id}) }}" class="btn btn-primary">Modificar</a>
+						</li>
+					{% endfor %}
+				</ul>
+				{# Enlace para añadir nueva incidencia #}
+				<a href="{{ path('addIncidencia', {id: cliente.id}) }}" class="btn btn-success mt-3">Añadir Nueva Incidencia</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

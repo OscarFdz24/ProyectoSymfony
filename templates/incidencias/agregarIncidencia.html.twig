@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Añadir Incidencia{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+		<div class="container">
+			<a class="navbar-brand" href="#">Servicio Tecnico</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLosClientes') }}">Clientes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLasIncidencias') }}">Incidencias</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					{% if app.user %}
+						<li class="nav-item mx-5">
+							<span class="navbar-text">{{ app.user.nombre }}</span>
+						</li>
+						<li class="nav-item">
+							<a class=" btn btn-danger" href="{{ path('app_logout') }}">Cerrar sesión</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Añadir Incidencia</h1>
+
+                        {{ form_start(formularioIncidencia) }}
+
+                        <div class="form-group">
+                            {{ form_label(formularioIncidencia.titulo, 'Título') }}
+                            {{ form_widget(formularioIncidencia.titulo, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formularioIncidencia.estado, 'Estado') }}
+                            {{ form_widget(formularioIncidencia.estado, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formularioIncidencia.cliente, 'Cliente') }}
+                            {{ form_widget(formularioIncidencia.cliente, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        {{ form_end(formularioIncidencia) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

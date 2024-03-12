@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista de Clientes
+{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+		<div class="container">
+			<a class="navbar-brand" href="#">Servicio Tecnico</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLosClientes') }}">Clientes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('verTodosLasIncidencias') }}">Incidencias</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					{% if app.user %}
+						<li class="nav-item mx-5">
+							<span class="navbar-text">{{ app.user.nombre }}</span>
+						</li>
+						<li class="nav-item">
+							<a class=" btn btn-danger" href="{{ path('app_logout') }}">Cerrar sesión</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container text-center">
+		<div class="example-wrapper">
+			<h1 class="mb-4">Lista de Clientes</h1>
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% if clientes is not empty %}
+				<ul class="list-group mb-4">
+					{% for cliente in clientes %}
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<div>
+								<a href="{{ path('verCliente', { 'id': cliente.id }) }}">
+									{{ cliente.nombre }}
+								</a>
+							</div>
+							<div class="btn-group" role="group" aria-label="Botones">
+								<a href="{{ path('deleteCliente', {id: cliente.id}) }}" class="btn btn-danger mr-2">Borrar</a>
+								<a href="{{ path('editarCliente', {id: cliente.id}) }}" class="btn btn-primary">Modificar</a>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<p>No hay clientes.</p>
+			{% endif %}
+			<a href="{{ path('addCliente') }}" class="btn btn-success">Añadir cliente</a>
+		</div>
+	</div>
+{% endblock %}
